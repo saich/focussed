@@ -1,0 +1,16 @@
+{
+	"name"			: "Foccusser",
+	"version"		: "1.0",
+	"description"	: "Avoid distractions.. Focus on the content that matter... ",
+	"minimum_chrome_version"	: "4.1",
+	"persmissions"	: ["*://*"],
+	"background_page"	: "background.html",
+	"content_scripts"	: [
+		{
+			"matches"		: ["*://*/*"],
+			"js"			: ["jquery.js", "content_script.js"],
+			"run_at"		: "document_idle",
+			"all_frames"	: false
+		}
+	]
+}
