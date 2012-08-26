@@ -34,7 +34,8 @@ var VisualLayer = {
 			sheet.type = "text/css";
 			sheet.id = "__focussed";
 			sheet.innerHTML = "@media screen {.__focussed_unfocus {opacity: 0.25; }}";
-		document.getElementsByTagName("head")[0].appendChild(sheet);
+		
+		(document.head || document.documentElement).appendChild(sheet);
 	},
 	
 	toggle: function() {
@@ -145,6 +146,8 @@ GenericHandler.prototype.garbage = function() {
 
 var __focussed = {
 	process: function() {
+		if(__focussed.processed) return;
+		
 		var host = window.location.host;
 		/** @type {Focusser} */
 		var handler 
@@ -157,13 +160,22 @@ var __focussed = {
 			handler.garbage();
 			VisualLayer.finalize();
 		}
-	}
+		
+		__focussed.processed = true;
+	},
+	
+	processed: false
 };
 
-__focussed.process();
-
+chrome.extension.sendMessage({}, function(response) {
+	if(response.auto_start === true)
+		__focussed.process();
+});
 
 window.addEventListener("keypress", function(event) {
 	if(event.shiftKey && event.keyCode === 126)
-		VisualLayer.toggle();
+		if(!__focussed.processed) 
+			__focussed.process();
+		else
+			VisualLayer.toggle();
 }, false);
