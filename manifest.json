@@ -4,7 +4,7 @@
 	"description"	: "Avoid distractions.. Focus on the content that matter... ",
 	"minimum_chrome_version"	: "18",
 	"manifest_version": 2,
-	"persmissions"	: ["*://*"],
+	"permissions"	: ["*://*/*"],
 	"background"	: {
 		"scripts": ["background.js"]
 	},
