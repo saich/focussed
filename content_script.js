@@ -5,12 +5,14 @@
 // TODO: Feedback Tool + Take a screenshot
 
 var VisualLayer = {
-	focus_article: function(article) {
-	
+	focus_article: function (article) {
+
 		// TODO: This logic doesn't work good when article.length > 1
-		if(article.length != 1) return;
-		
-		for(var i = 0; i < article.length; i++) {
+		if (article.length !== 1) {
+			return;
+		}
+
+		for (var i = 0; i < article.length; i++) {
 			var node = $(article[i]);
 			var parent = node.parent();
 			
@@ -24,11 +26,11 @@ var VisualLayer = {
 		}
 	},
 	
-	garbage: function(elem) {
+	garbage: function (elem) {
 		elem.addClass("__focussed_unfocus");
 	},
 	
-	finalize: function() {
+	finalize: function () {
 		// Add stylesheet..
 		var sheet = document.createElement("style");
 			sheet.type = "text/css";
@@ -38,7 +40,7 @@ var VisualLayer = {
 		(document.head || document.documentElement).appendChild(sheet);
 	},
 	
-	toggle: function() {
+	toggle: function () {
 		var style_node = document.getElementById("__focussed");
 		if(style_node)
 			style_node.disabled = !style_node.disabled;
@@ -137,12 +139,12 @@ GenericHandler.prototype.focus = function() {
 	
 	if(article.length == 1)
 		VisualLayer.focus_article(article);
-}
+};
 
 GenericHandler.prototype.garbage = function() {
 	var pattern = ".robots-nocontent,#disqus_thread";
 	VisualLayer.garbage( $(pattern) );
-}
+};
 
 var __focussed = {
 	process: function() {
@@ -174,7 +176,7 @@ chrome.extension.sendMessage({}, function(response) {
 
 window.addEventListener("keypress", function(event) {
 	if(event.shiftKey && event.keyCode === 126)
-		if(!__focussed.processed) 
+		if (!__focussed.processed)
 			__focussed.process();
 		else
 			VisualLayer.toggle();
